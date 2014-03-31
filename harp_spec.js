@@ -97,3 +97,68 @@ describe("Add less preprocessor to the mini-harp app",function() {
       .end(done);
   });
 });
+
+describe("The root path should render index.html",function() {
+  var app = harp(root);
+
+  it("should render index",function(done) {
+    request(app)
+      .get("/")
+      .expect("<b>hello from index.jade</b>")
+      .end(done);
+  });
+});
+
+describe("Should not respond to .jade or .less",function() {
+  var app = harp(root);
+
+  it("should return 404 for /index.jade",function(done) {
+    request(app)
+      .get("/index.jade")
+      .expect(404)
+      .end(done);
+  });
+
+  it("should return 404 for /foo.less",function(done) {
+    request(app)
+      .get("/foo.less")
+      .expect(404)
+      .end(done);
+  });
+});
+
+describe("No chunked transfer for .jade or .less",function() {
+  var app = harp(root);
+
+  it("disables chunking for jade",function(done) {
+    request(app)
+      .get("/foo.html")
+      .expect("Content-Length",26)
+      .end(done);
+  });
+
+  it("disables chunking for less",function(done) {
+    request(app)
+      .get("/foo.css")
+      .expect("Content-Length",25)
+      .end(done);
+  });
+});
+
+describe("Set content type for .jade or .less",function() {
+  var app = harp(root);
+
+  it("set content type for jade",function(done) {
+    request(app)
+      .get("/foo.html")
+      .expect("Content-Type","text/html; charset=UTF-8")
+      .end(done);
+  });
+
+  it("set content type for less",function(done) {
+    request(app)
+      .get("/foo.css")
+      .expect("Content-Type","text/css; charset=UTF-8")
+      .end(done);
+  });
+});
