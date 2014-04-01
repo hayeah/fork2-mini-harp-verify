@@ -6,7 +6,12 @@ var harp = require("../");
 var root = __dirname + "/assets"
 
 describe("Implement jade template rendering",function() {
-  var jade = connect().use(require("../lib/processor/jade")(root));
+  var jade;
+
+  before(function() {
+    jade = connect().use(require("../lib/processor/jade")(root));
+  });
+
 
   it("should return 200 for /foo.html",function(done) {
     request(jade)
@@ -57,7 +62,10 @@ describe("Add jade preprocessor to the mini-harp app",function() {
 });
 
 describe("Implement less template rendering",function() {
-  var css = connect().use(require("../lib/processor/less")(root));
+  var css;
+  before(function() {
+    css = connect().use(require("../lib/processor/less")(root));
+  });
 
   it("should return 200 for /foo.css",function(done) {
     request(css)
