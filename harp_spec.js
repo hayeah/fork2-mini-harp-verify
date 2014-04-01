@@ -57,24 +57,24 @@ describe("Add jade preprocessor to the mini-harp app",function() {
 });
 
 describe("Implement less template rendering",function() {
-  var jade = connect().use(require("../lib/processor/less")(root));
+  var css = connect().use(require("../lib/processor/less")(root));
 
   it("should return 200 for /foo.css",function(done) {
-    request(jade)
+    request(css)
       .get("/foo.css")
       .expect(200)
       .end(done);
   });
 
   it("should render foo.less for /foo.css",function(done) {
-    request(jade)
+    request(css)
       .get("/foo.css")
       .expect(".foo {\n  width: 500px;\n}\n")
       .end(done);
   });
 
   it("should 404 for /not-found.css", function(done) {
-    request(jade)
+    request(css)
       .get("/not-found.css")
       .expect(404)
       .end(done);
